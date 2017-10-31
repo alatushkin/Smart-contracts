@@ -517,24 +517,9 @@ contract IcoPhaseManagement {
     }
     
     /* Handle receiving ether in ICO phase - we work out how much the user has bought, allocate a suitable balance and send their change */
-    function () onlyDuringIco payable {
-        // Forbid funding outside of ICO
-        if (now < icoStartTime || now > icoEndTime)
-            throw;
-
-        /* Determine how much they've actually purhcased and any ether change */
-        //uint256 tokensPurchased = msg.value.div(icoUnitPrice);
-        //uint256 purchaseTotalPrice = tokensPurchased * icoUnitPrice;
-        //uint256 change = msg.value.sub(purchaseTotalPrice);
-
-        /* Increase their new balance if they actually purchased any */
-        //if (tokensPurchased > 0)
+    function () onlyDuringIco payable {                    
         xWinToken.mintTokens(msg.sender, msg.value.mul(100000000).div(icoUnitPrice));
-
-        mainWallet.send(msg.value);
-        /* Send change back to recipient */
-        /*if (change > 0 && !msg.sender.send(change))
-            throw;*/
+        mainWallet.send(msg.value);        
     }
     
 }
