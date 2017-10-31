@@ -76,10 +76,7 @@ contract AuthenticationManager {
     /* When this contract is first setup we use the creator as the first admin */    
     function AuthenticationManager() {
         /* Set the first admin to be the person creating the contract */
-        adminAddresses[msg.sender] = true;
-        AdminAdded(0, msg.sender);
-        adminAudit.length++;
-        adminAudit[adminAudit.length - 1] = msg.sender;
+        _addAdmin(msg.sender)        
     }
 
     /* Gets whether or not the specified address is currently an admin */
@@ -119,6 +116,10 @@ contract AuthenticationManager {
             throw;
         
         // Add the user
+        _addAdmin(_address)        
+    }
+    
+    function _addAdmin(address _address) private {
         adminAddresses[_address] = true;
         AdminAdded(msg.sender, _address);
         adminAudit.length++;
