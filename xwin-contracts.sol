@@ -250,10 +250,6 @@ contract XWinToken {
     }
 
     modifier fundSendablePhase {
-        // If it's in ICO phase, forbid it
-        //if (icoPhaseManagement.icoPhase())
-        //    throw;
-
         // If it's abandoned, forbid it
         if (icoPhaseManagement.icoAbandoned())
             throw;
@@ -520,21 +516,13 @@ contract IcoPhaseManagement {
     function () onlyDuringIco payable {
         // Forbid funding outside of ICO
         if (now < icoStartTime || now > icoEndTime)
-            throw;
-
-        /* Determine how much they've actually purhcased and any ether change */
-        //uint256 tokensPurchased = msg.value.div(icoUnitPrice);
-        //uint256 purchaseTotalPrice = tokensPurchased * icoUnitPrice;
-        //uint256 change = msg.value.sub(purchaseTotalPrice);
+            throw;     
 
         /* Increase their new balance if they actually purchased any */
         //if (tokensPurchased > 0)
         xWinToken.mintTokens(msg.sender, msg.value.mul(100000000).div(icoUnitPrice));
 
         mainWallet.send(msg.value);
-        /* Send change back to recipient */
-        /*if (change > 0 && !msg.sender.send(change))
-            throw;*/
     }
     
 }
@@ -608,8 +596,6 @@ contract DividendManager {
             throw;
     }
 }
-
-//interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) public; }
 
 /**
  * The shareholder association contract 
